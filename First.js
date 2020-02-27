@@ -17,9 +17,6 @@ export default class First extends Component {
     return fetch('https://pokeapi.co/api/v2/pokemon?limit=1000')
       .then((response) => response.json())
       .then((responseJson) => {
-
-        console.log(responseJson.results);
-
         this.setState({
           isLoading: false,
           dataSource: responseJson.results,
