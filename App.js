@@ -14,8 +14,8 @@ function App() {
   return (
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Listes Pokemons" component={First} />
-          <Stack.Screen name="Second" component={Second} />
+          <Stack.Screen name="Liste Pokemon" component={First} />
+          <Stack.Screen name="Détails" component={Second} />
         </Stack.Navigator>
       </NavigationContainer>
   );

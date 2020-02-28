@@ -1,8 +1,14 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Button, TextInput, Text, FlatList } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Button,
+  TextInput,
+  Text,
+  FlatList,
+  Image
+} from "react-native";
 import { BorderlessButton } from "react-native-gesture-handler";
-
-
 
 export default class First extends Component {
   constructor(props) {
@@ -13,23 +19,22 @@ export default class First extends Component {
     };
   }
 
-  componentDidMount(){
-    return fetch('https://pokeapi.co/api/v2/pokemon?limit=1000')
-      .then((response) => response.json())
-      .then((responseJson) => {
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson.results,
-        }, function(){
-
-        });
-
+  componentDidMount() {
+    return fetch("https://pokeapi.co/api/v2/pokemon?limit=1000")
+      .then(response => response.json())
+      .then(responseJson => {
+        this.setState(
+          {
+            isLoading: false,
+            dataSource: responseJson.results
+          },
+          function() {}
+        );
       })
-      .catch((error) =>{
+      .catch(error => {
         console.error(error);
       });
   }
-
 
   render() {
     const { navigate } = this.props.navigation;
@@ -37,28 +42,42 @@ export default class First extends Component {
       <View
         style={{
           flex: 1,
-          justifyContent: "center",
-          flexDirection: "column"
+          alignContent:"center",
+          flexDirection: "column",
         }}
       >
-        <View style={{ flex: 10, marginTop: "1%" }}>
-          <View style={{ flex: 1, paddingTop: 20 }}>
+        <View style={{ flex: 10}}>
+          <View style={{ flex: 1, margin: 5, backgroundColor: '#ddd', height: 130}}>
             <FlatList
+                style={{margin:5}}
               data={this.state.dataSource}
+              numColumns={2}
               renderItem={({ item }) => (
-                <Text style={styles.l_pokemon} onPress={() => navigate("Second", { message: item.url })}>
-                  {item.name}
+                <Text style={styles.l_pokemon}
+                  onPress={() => navigate("Détails", { 
+                      message: item.name,
+                      id: item.url.split('/')[6] 
+                    
+                    })}
+                >
+                  <Image
+                    style={{ width: 100, height: 100}}
+                    source={{
+                      uri:
+                        `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${(item.url).split('/')[6]}.png`
+                    }}
+                  />
+                 {'\n'}  
+                 {'\n'}  
+                 {item.name}         
                 </Text>
               )}
-              keyExtractor={({ id }, index) => id}
-            />
+              
+              />
           </View>
         </View>
         <View style={{ flex: 1 }}>
-          <Button
-            title="Next Page"
-            onPress={() => navigate("Second", { message: this.state.message })}
-          />
+           <Text>Esteban Mestrie</Text>
         </View>
       </View>
     );
@@ -79,12 +98,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: "#DBDBD6"
   },
-  l_pokemon:{
+  l_pokemon: {
     fontSize: 20,
-    backgroundColor: "#1b262c",
-    color: "white",
-    borderWidth: 1,
-    borderColor: "white",
-
+    width: '50%',
+    backgroundColor: "white",
+    color: "black",
+    borderWidth: 0.5,
+    borderColor: "black",
+    alignContent: "center",
+    textAlign: "center",
+    marginBottom: 10
   }
 });
