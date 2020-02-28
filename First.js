@@ -6,7 +6,7 @@ import {
   TextInput,
   Text,
   FlatList,
-  Image
+  Image,
 } from "react-native";
 import { BorderlessButton } from "react-native-gesture-handler";
 
@@ -15,7 +15,9 @@ export default class First extends Component {
     super(props);
     this.state = {
       message: "",
-      test: "test"
+      test: "test",
+      data: [],      
+      error: null, 
     };
   }
 
@@ -91,13 +93,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16
   },
-  input: {
-    width: 200,
-    height: 44,
-    padding: 10,
-    marginBottom: 10,
-    backgroundColor: "#DBDBD6"
-  },
+
   l_pokemon: {
     fontSize: 20,
     width: '50%',

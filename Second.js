@@ -76,6 +76,20 @@ export default class Second extends Component {
         console.error(error);
       });
   }
+
+  testLangue(itemLangue, itemText)
+  {
+      console.log();
+      
+      if(itemLangue = 'en')
+      {
+          return <Text></Text>
+      }
+      else
+      {
+          return
+      }
+  }
   render() {
     const { navigate } = this.props.navigation;
     const { message } = this.props.route.params;
@@ -141,6 +155,7 @@ export default class Second extends Component {
               )}
             />
           </View>
+          <Text></Text>
           <Text></Text>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <Text>➖➖➖➖➖➖</Text>
