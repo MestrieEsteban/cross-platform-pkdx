@@ -10,6 +10,22 @@ import {
 } from "react-native";
 import { BorderlessButton } from "react-native-gesture-handler";
 
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCJGUtC-5BlBP8eX14FuoIjGIuHwOpeeg4",
+    authDomain: "react-native-pkdx.firebaseapp.com",
+    databaseURL: "https://react-native-pkdx.firebaseio.com",
+    projectId: "react-native-pkdx",
+    storageBucket: "react-native-pkdx.appspot.com",
+    messagingSenderId: "299448272539",
+    appId: "1:299448272539:web:34bd523618092ba1dd283e",
+    measurementId: "G-NHBH3CT7MJ"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+
+
 export default class First extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +44,7 @@ export default class First extends Component {
         this.setState(
           {
             isLoading: false,
-            dataSource: responseJson.results
+            dataSource: responseJson.results,
           },
           function() {}
         );
@@ -53,7 +69,7 @@ export default class First extends Component {
             <FlatList
                 style={{margin:5}}
               data={this.state.dataSource}
-              numColumns={2}
+              numColumns={3}
               renderItem={({ item }) => (
                 <Text style={styles.l_pokemon}
                   onPress={() => navigate("Détails", { 
