@@ -17,6 +17,7 @@ yarn start
 expo start
 ```
 
-##list Pokemon :  
-f
+## list Pokemon :  
+
 ![](list_pokemon.gif)
+
