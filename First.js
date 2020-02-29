@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   View,
-  Button,
   TextInput,
   Text,
   FlatList,
   Image
 } from "react-native";
+import { Button, ThemeProvider, Input } from "react-native-elements";
+
+import firebaseApp from "./firebase"
 
 
 export default class First extends Component {
@@ -17,26 +19,48 @@ export default class First extends Component {
       message: "",
       test: "test",
       data: [],
-      error: null
+      error: null,
+      loggedIn: false,
+      loading: false,
     };
   }
 
   componentDidMount() {
+    this.listPokemon()
+    this.testConnect()
+
+  }
+
+  listPokemon() {
     return fetch("https://pokeapi.co/api/v2/pokemon?limit=1000")
       .then(response => response.json())
       .then(responseJson => {
+        
         this.setState(
           {
             isLoading: false,
             dataSource: responseJson.results
           },
-          function() {}
+          function () { }
         );
       })
       .catch(error => {
         console.error(error);
       });
   }
+  testConnect() {
+    firebaseApp.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ loggedIn: true })
+
+        this.props.navigation.navigate('Liste Pokemon')
+      } else {
+        this.setState({ loggedIn: false })
+        this.props.navigation.navigate('Connexion / Inscription')
+      }
+    })
+  }
+
 
   render() {
     const { navigate } = this.props.navigation;
@@ -55,7 +79,7 @@ export default class First extends Component {
             <FlatList
               style={{ margin: 5 }}
               data={this.state.dataSource}
-              numColumns={3}
+              numColumns={2}
               renderItem={({ item }) => (
                 <Text
                   style={styles.l_pokemon}
@@ -71,7 +95,7 @@ export default class First extends Component {
                     source={{
                       uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
                         item.url.split("/")[6]
-                      }.png`
+                        }.png`
                     }}
                   />
                   {"\n"}
@@ -83,10 +107,22 @@ export default class First extends Component {
           </View>
         </View>
         <View style={{ flex: 1 }}>
-          <Button
-            title="Connexion/Inscription"
-            onPress={() => navigate("Connexion / Inscription", {})}
-          ></Button>
+          {this.state.loggedIn ?
+            <Button
+              title="My profil"
+              onPress={() =>
+                this.props.navigation.navigate('Profil')
+              }
+            ></Button>
+            :
+            <Button
+              title="Connexion / Inscription"
+              onPress={() =>
+                this.props.navigation.navigate('Connexion / Inscription')
+              }
+            ></Button>
+          }
+
         </View>
       </View>
     );

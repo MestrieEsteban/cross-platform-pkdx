@@ -9,21 +9,7 @@ import {
   FlatList
 } from "react-native";
 import { Button, ThemeProvider, Input } from "react-native-elements";
-import * as firebase from 'firebase';
-// Your web app's Firebase configuration
-var firebaseConfig = {
-  apiKey: "AIzaSyCJGUtC-5BlBP8eX14FuoIjGIuHwOpeeg4",
-  authDomain: "react-native-pkdx.firebaseapp.com",
-  databaseURL: "https://react-native-pkdx.firebaseio.com", 
-  projectId: "react-native-pkdx",
-  storageBucket: "react-native-pkdx.appspot.com",
-  messagingSenderId: "299448272539",
-  appId: "1:299448272539:web:34bd523618092ba1dd283e",
-  measurementId: "G-NHBH3CT7MJ"
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
+import firebaseApp from "./firebase"
 
 export default class Second extends Component {
   constructor(props) {
@@ -33,25 +19,15 @@ export default class Second extends Component {
       password: ""
     };
   }
-
-  componentDidMount() {
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user != null) {
-          console.log("We are authenticated now!");
-        }
-      
-      });
-  }
-
-
+  
   signUpUser = (email, password) => {
     try {
 
-        if(this.state.password.length<6){
-            alert("Please enter atleast 6 characters")
-            return
-        }
-        firebase.auth().createUserWithEmailAndPassword(email, password)
+      if (this.state.password.length < 6) {
+        alert("Please enter atleast 6 characters")
+        return
+      }
+      firebaseApp.auth().createUserWithEmailAndPassword(email, password)
 
     } catch (error) {
       console.log(error.toString());
@@ -61,20 +37,19 @@ export default class Second extends Component {
   LoginUser = (email, password) => {
     try {
 
-        if(this.state.password.length<6){
-            alert("Please enter atleast 6 characters")
-            return
-        }
-        firebase.auth().signInWithEmailAndPassword(email, password).then(function (user){
-
-        })
+      if (this.state.password.length < 6) {
+        alert("Please enter atleast 6 characters")
+        return
+      }
+      firebaseApp.auth().signInWithEmailAndPassword(email, password).then(function (user) {
+      })
 
     } catch (error) {
       console.log(error.toString());
     }
   };
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   render() {
     return (

@@ -6,8 +6,11 @@ import {
   Image,
   Text,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  Button
 } from "react-native";
+import firebaseApp from "./firebase"
+
 
 export default class Second extends Component {
   constructor(props) {
@@ -35,7 +38,7 @@ export default class Second extends Component {
             isLoading: false,
             dataSourceType: responseJson.types
           },
-          function() {}
+          function () { }
         );
       })
       .catch(error => {
@@ -52,7 +55,7 @@ export default class Second extends Component {
             isLoading: false,
             dataSourceDesc: responseJson.flavor_text_entries
           },
-          function() {}
+          function () { }
         );
       })
       .catch(error => {
@@ -69,7 +72,7 @@ export default class Second extends Component {
             isLoading: false,
             dataSourceAbility: responseJson.abilities
           },
-          function() {}
+          function () { }
         );
       })
       .catch(error => {
@@ -77,19 +80,30 @@ export default class Second extends Component {
       });
   }
 
-  testLangue(itemLangue, itemText)
-  {
-      console.log();
-      
-      if(itemLangue = 'en')
-      {
-          return <Text></Text>
-      }
-      else
-      {
-          return
-      }
+  testLangue(itemLangue, itemText) {
+    console.log();
+
+    if (itemLangue = 'en') {
+      return <Text></Text>
+    }
+    else {
+      return
+    }
   }
+  addToFavorit(id, name){
+    var user = firebaseApp.auth().currentUser.uid
+    firebaseApp.database().ref('users/'+user+'/'+id).set({
+      name: name,
+      id: id
+    }).then(() => {
+      alert('Ajouté au favori');
+    }).catch((error) => {
+      alert(error);
+      
+    })
+  }
+
+
   render() {
     const { navigate } = this.props.navigation;
     const { message } = this.props.route.params;
@@ -106,6 +120,12 @@ export default class Second extends Component {
           <Text style={styles.name_poke}>
             {message.toUpperCase()} #{id}
           </Text>
+          <TouchableOpacity onPress={() =>
+            this.addToFavorit(id, message)}>
+            <Text style={styles.pokeFavo}>
+              🌑
+          </Text>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               if (
@@ -143,6 +163,7 @@ export default class Second extends Component {
                 }}
               />
             </View>
+
           </TouchableOpacity>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <FlatList
@@ -164,7 +185,7 @@ export default class Second extends Component {
           </View>
           <View>
             <FlatList
-            
+
               data={this.state.dataSourceAbility}
               renderItem={({ item }) => (
                 <Text>{item.ability.name.toUpperCase()}</Text>
@@ -172,6 +193,7 @@ export default class Second extends Component {
             />
           </View>
         </View>
+
       </View>
     );
   }
@@ -186,6 +208,10 @@ const styles = StyleSheet.create({
   },
   name_poke: {
     fontSize: 30,
+    textAlign: "center"
+  },
+  pokeFavo: {
+    fontSize: 20,
     textAlign: "center"
   }
 });
