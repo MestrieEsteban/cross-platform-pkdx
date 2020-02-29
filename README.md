@@ -18,6 +18,17 @@ expo start
 ```
 
 ## list Pokemon :  
-
 ![](list_pokemon.gif)
+
+## Connexion Pokemon :  
+![](connexion_pokemon.gif)
+
+## detail Pokemon :  
+![](detail_pokemon.gif)
+
+## search Pokemon :  
+![](search_pokemon.gif)
+
+## fav Pokemon :  
+![](favori_pokemon.gif)
 
