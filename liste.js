@@ -3,7 +3,7 @@ import {
   StyleSheet,
   View,
   TextInput,
-  
+
   FlatList,
   Image,
   ActivityIndicator
@@ -11,6 +11,8 @@ import {
 import { Button, SearchBar, Text } from "react-native-elements";
 import firebaseApp from "./firebase"
 import _ from 'lodash';
+import typePoke from "./typeList";
+
 
 
 
@@ -36,20 +38,45 @@ export default class First extends Component {
 
   listPokemon() {
     this.setState({ loading: true })
-    return fetch("https://pokeapi.co/api/v2/pokemon?limit=1000")
+    return fetch("https://pokeapi.co/api/v2/pokemon?limit=300")
       .then(response => response.json())
       .then(responseJson => {
+
         this.setState(
           {
-            loading: false,
             dataSource: responseJson.results
+
           },
-          function () { }
+          function () {
+            this.PokeType(responseJson.results)
+          }
         );
+
       })
       .catch(error => {
         console.error(error);
       });
+
+  }
+  PokeType(results) {
+
+    results.forEach(element => {
+      fetch("https://pokeapi.co/api/v2/pokemon/" + element.name)
+        .then(response => response.json())
+        .then(responseJson => {
+
+          this.setState(
+            {
+              isLoading: false,
+              [element.name]: responseJson.types[0].type.name
+            },
+            function () { }
+          );
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    })
   }
   testConnect() {
     this.setState({ loading: true })
@@ -120,8 +147,9 @@ export default class First extends Component {
                 data={this.state.dataSource}
                 numColumns={2}
                 renderItem={({ item }) => (
+
                   <Text
-                    style={styles.l_pokemon}
+                    style={styles.l_pokemon, typePoke[this.state[item.name]]}
                     onPress={() =>
                       navigate("Détails", {
                         message: item.name,
