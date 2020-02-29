@@ -22,13 +22,18 @@ expo start
 
 ## Demonstration
 list Pokemon :  
-![](list_pokemon.gif)
+
+[](list_pokemon.gif)
 connexion :  
-![](connexion_pokemon.gif)
+
+[](connexion_pokemon.gif)
 Deatail Pokemon :  
-![](detail.gif)
+
+[](detail_pokemon.gif)
 Search Pokemon :  
-![](search.gif)
+
+[](search_pokemon.gif)
 Fav Pokemon :  
-![](favori.gif)
+
+[](favori_pokemon.gif)
 
