@@ -20,20 +20,19 @@ expo start
 ## Exercise
 [https://github.com/makiboto/react-native-pkdx](https://github.com/makiboto/react-native-pkdx)
 
-## Demonstration
-list Pokemon :  
+##list Pokemon :  
 
 ![](list_pokemon.gif)
-connexion :  
+##connexion :  
 
 ![](connexion_pokemon.gif)
-Deatail Pokemon :  
+##Detail Pokemon :  
 
 ![](detail_pokemon.gif)
-Search Pokemon :  
+##Search Pokemon :  
 
 ![](search_pokemon.gif)
-Fav Pokemon :  
+##Fav Pokemon :  
 
 ![](favori_pokemon.gif)
 
