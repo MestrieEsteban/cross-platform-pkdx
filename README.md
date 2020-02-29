@@ -21,4 +21,5 @@ expo start
 [https://github.com/makiboto/react-native-pkdx](https://github.com/makiboto/react-native-pkdx)
 
 ##list Pokemon :  
+f
 ![](list_pokemon.gif)
