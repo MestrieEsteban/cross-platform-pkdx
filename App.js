@@ -6,6 +6,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import First from './First';
 import Second from './Second';
+import Inscription from './Inscription';
+console.disableYellowBox = true; 
 
 
 const Stack = createStackNavigator();
@@ -16,6 +18,7 @@ function App() {
         <Stack.Navigator>
           <Stack.Screen name="Liste Pokemon" component={First} />
           <Stack.Screen name="Détails" component={Second} />
+          <Stack.Screen name="Connexion / Inscription" component={Inscription} />
         </Stack.Navigator>
       </NavigationContainer>
   );

@@ -6,24 +6,8 @@ import {
   TextInput,
   Text,
   FlatList,
-  Image,
+  Image
 } from "react-native";
-import { BorderlessButton } from "react-native-gesture-handler";
-
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyCJGUtC-5BlBP8eX14FuoIjGIuHwOpeeg4",
-    authDomain: "react-native-pkdx.firebaseapp.com",
-    databaseURL: "https://react-native-pkdx.firebaseio.com",
-    projectId: "react-native-pkdx",
-    storageBucket: "react-native-pkdx.appspot.com",
-    messagingSenderId: "299448272539",
-    appId: "1:299448272539:web:34bd523618092ba1dd283e",
-    measurementId: "G-NHBH3CT7MJ"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
 
 
 export default class First extends Component {
@@ -32,8 +16,8 @@ export default class First extends Component {
     this.state = {
       message: "",
       test: "test",
-      data: [],      
-      error: null, 
+      data: [],
+      error: null
     };
   }
 
@@ -44,7 +28,7 @@ export default class First extends Component {
         this.setState(
           {
             isLoading: false,
-            dataSource: responseJson.results,
+            dataSource: responseJson.results
           },
           function() {}
         );
@@ -60,42 +44,49 @@ export default class First extends Component {
       <View
         style={{
           flex: 1,
-          alignContent:"center",
-          flexDirection: "column",
+          alignContent: "center",
+          flexDirection: "column"
         }}
       >
-        <View style={{ flex: 10}}>
-          <View style={{ flex: 1, margin: 5, backgroundColor: '#ddd', height: 130}}>
+        <View style={{ flex: 10 }}>
+          <View
+            style={{ flex: 1, margin: 5, backgroundColor: "#ddd", height: 130 }}
+          >
             <FlatList
-                style={{margin:5}}
+              style={{ margin: 5 }}
               data={this.state.dataSource}
               numColumns={3}
               renderItem={({ item }) => (
-                <Text style={styles.l_pokemon}
-                  onPress={() => navigate("Détails", { 
+                <Text
+                  style={styles.l_pokemon}
+                  onPress={() =>
+                    navigate("Détails", {
                       message: item.name,
-                      id: item.url.split('/')[6] 
-                    
-                    })}
+                      id: item.url.split("/")[6]
+                    })
+                  }
                 >
                   <Image
-                    style={{ width: 100, height: 100}}
+                    style={{ width: 100, height: 100 }}
                     source={{
-                      uri:
-                        `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${(item.url).split('/')[6]}.png`
+                      uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+                        item.url.split("/")[6]
+                      }.png`
                     }}
                   />
-                 {'\n'}  
-                 {'\n'}  
-                 {item.name}         
+                  {"\n"}
+                  {"\n"}
+                  {item.name}
                 </Text>
               )}
-              
-              />
+            />
           </View>
         </View>
         <View style={{ flex: 1 }}>
-           <Text>Esteban Mestrie</Text>
+          <Button
+            title="Connexion/Inscription"
+            onPress={() => navigate("Connexion / Inscription", {})}
+          ></Button>
         </View>
       </View>
     );
@@ -112,7 +103,7 @@ const styles = StyleSheet.create({
 
   l_pokemon: {
     fontSize: 20,
-    width: '50%',
+    width: "50%",
     backgroundColor: "white",
     color: "black",
     borderWidth: 0.5,
