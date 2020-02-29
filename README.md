@@ -21,18 +21,4 @@ expo start
 [https://github.com/makiboto/react-native-pkdx](https://github.com/makiboto/react-native-pkdx)
 
 ##list Pokemon :  
-
 ![](list_pokemon.gif)
-##connexion :  
-
-![](connexion_pokemon.gif)
-##Detail Pokemon :  
-
-![](detail_pokemon.gif)
-##Search Pokemon :  
-
-![](search_pokemon.gif)
-##Fav Pokemon :  
-
-![](favori_pokemon.gif)
-
