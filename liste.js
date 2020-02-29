@@ -3,15 +3,14 @@ import {
   StyleSheet,
   View,
   TextInput,
-  Text,
+  
   FlatList,
   Image,
   ActivityIndicator
 } from "react-native";
-import { Button, ThemeProvider, Input, SearchBar } from "react-native-elements";
+import { Button, SearchBar, Text } from "react-native-elements";
 import firebaseApp from "./firebase"
 import _ from 'lodash';
-import { Logs } from "expo";
 
 
 
@@ -40,7 +39,6 @@ export default class First extends Component {
     return fetch("https://pokeapi.co/api/v2/pokemon?limit=1000")
       .then(response => response.json())
       .then(responseJson => {
-
         this.setState(
           {
             loading: false,
@@ -134,9 +132,7 @@ export default class First extends Component {
                     <Image
                       style={{ width: 100, height: 100 }}
                       source={{
-                        uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-                          item.url.split("/")[6]
-                          }.png`
+                        uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.url.split("/")[6]}.png`
                       }}
                     />
                     {"\n"}

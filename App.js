@@ -4,8 +4,8 @@ import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import First from './First';
-import Second from './Second';
+import First from './liste';
+import Second from './details';
 import Inscription from './Inscription';
 import profil from './profil';
 console.disableYellowBox = true; 

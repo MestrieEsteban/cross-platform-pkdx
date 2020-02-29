@@ -6,9 +6,9 @@ import {
   Image,
   Text,
   TouchableOpacity,
-  FlatList,
-  Button
+  FlatList
 } from "react-native";
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import firebaseApp from "./firebase"
 
 
@@ -19,12 +19,12 @@ export default class Second extends Component {
       text: "",
       url:
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon",
-      shiny: "/"
+      shiny: "/",
+      test: ''
     };
   }
   componentDidMount() {
     this.PokeType();
-    this.PokeDesc();
     this.PokeAbility();
   }
   PokeType() {
@@ -45,22 +45,25 @@ export default class Second extends Component {
         console.error(error);
       });
   }
-  PokeDesc() {
-    let { id } = this.props.route.params;
-    return fetch("https://pokeapi.co/api/v2/pokemon-species/" + id)
+  PokeDesc(name) {
+    if (this.state.description === undefined) {
+    fetch("https://pokeapi.co/api/v2/pokemon-species/" + name)
       .then(response => response.json())
       .then(responseJson => {
+        console.log(responseJson.flavor_text_entries[1].flavor_text);
         this.setState(
           {
-            isLoading: false,
-            dataSourceDesc: responseJson.flavor_text_entries
+            description : responseJson.flavor_text_entries[1].flavor_text
           },
           function () { }
         );
+        
       })
       .catch(error => {
         console.error(error);
       });
+    }
+    return <Text style={{textAlign: "center"}}>{this.state.description}</Text>
   }
   PokeAbility() {
     let { id } = this.props.route.params;
@@ -79,35 +82,41 @@ export default class Second extends Component {
         console.error(error);
       });
   }
-
-  testLangue(itemLangue, itemText) {
-    console.log();
-
-    if (itemLangue = 'en') {
-      return <Text></Text>
-    }
-    else {
-      return
-    }
-  }
-  addToFavorit(id, name){
+  addToFavorit(id, name) {
     var user = firebaseApp.auth().currentUser.uid
-    firebaseApp.database().ref('users/'+user+'/'+id).set({
+    firebaseApp.database().ref('users/' + user + '/' + id).set({
       name: name,
       id: id
     }).then(() => {
-      alert('Ajouté au favori');
+      alert('Ajouté au favoris');
     }).catch((error) => {
       alert(error);
-      
+
     })
+  }
+  descAbility(name) {
+    if (this.state[name] === undefined) {
+      fetch("https://pokeapi.co/api/v2/ability/" + name)
+        .then(response => response.json())
+        .then(responseJson => {
+          this.setState({ [name]: responseJson.effect_entries[0].effect })
+
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      return
+    } else {
+      return <Text>{this.state[name]}</Text>
+
+    }
   }
 
 
   render() {
-    const { navigate } = this.props.navigation;
     const { message } = this.props.route.params;
     const { id } = this.props.route.params;
+
 
     return (
       <View
@@ -123,7 +132,7 @@ export default class Second extends Component {
           <TouchableOpacity onPress={() =>
             this.addToFavorit(id, message)}>
             <Text style={styles.pokeFavo}>
-              🌑
+              ⭐
           </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -168,7 +177,7 @@ export default class Second extends Component {
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <FlatList
               data={this.state.dataSourceType}
-              numColumns={5}
+              numColumns={2}
               renderItem={({ item }) => (
                 <Text style={typePoke[item.type.name]}>
                   {item.type.name.toUpperCase()}
@@ -177,18 +186,21 @@ export default class Second extends Component {
             />
           </View>
           <Text></Text>
-          <Text></Text>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text>➖➖➖➖➖➖</Text>
-            <Text style={{ fontSize: 30, fontWeight: "bold" }}>ABILITY</Text>
-            <Text>➖➖➖➖➖➖</Text>
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          {this.PokeDesc(message)}
           </View>
+          <Text></Text>
           <View>
             <FlatList
 
               data={this.state.dataSourceAbility}
               renderItem={({ item }) => (
-                <Text>{item.ability.name.toUpperCase()}</Text>
+                <Card
+                  title={item.ability.name.toUpperCase()}>
+                  <Text style={{ marginBottom: 10 }}>
+                    {this.descAbility(item.ability.name)}
+                  </Text>
+                </Card>
               )}
             />
           </View>
