@@ -21,3 +21,6 @@ expo start
 [https://github.com/makiboto/react-native-pkdx](https://github.com/makiboto/react-native-pkdx)
 
 ## Demonstration
+###list Pokemon 
+![](list_pokemon.gif)
+
