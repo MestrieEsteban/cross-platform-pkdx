@@ -6,10 +6,14 @@ import {
   Image,
   Text,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  ScrollView,
+  Dimensions
 } from "react-native";
-import { Card, ListItem, Button, Icon } from 'react-native-elements'
-import firebaseApp from "./firebase"
+import { Card, ListItem, Button, Icon } from "react-native-elements";
+import firebaseApp from "./firebase";
+import { Audio } from "expo-av";
+
 
 
 export default class Second extends Component {
@@ -20,13 +24,34 @@ export default class Second extends Component {
       url:
         "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon",
       shiny: "/",
-      test: ''
+      test: "",
+      orientation: ""
     };
   }
   componentDidMount() {
     this.PokeType();
     this.PokeAbility();
   }
+
+  getOrientation = () =>
+  {
+    if( this.refs.rootView )
+    {
+        if( Dimensions.get('window').width < Dimensions.get('window').height )
+        {
+          this.setState({ orientation: 'portrait' });
+          console.log(this.state.orientation);
+        }
+        else
+        {
+          this.setState({ orientation: 'landscape' });
+          console.log(this.state.orientation);
+          
+        }
+        
+    }
+  }
+  
   PokeType() {
     let { id } = this.props.route.params;
 
@@ -38,7 +63,7 @@ export default class Second extends Component {
             isLoading: false,
             dataSourceType: responseJson.types
           },
-          function () { }
+          function() {}
         );
       })
       .catch(error => {
@@ -47,23 +72,23 @@ export default class Second extends Component {
   }
   PokeDesc(name) {
     if (this.state.description === undefined) {
-    fetch("https://pokeapi.co/api/v2/pokemon-species/" + name)
-      .then(response => response.json())
-      .then(responseJson => {
-        console.log(responseJson.flavor_text_entries[1].flavor_text);
-        this.setState(
-          {
-            description : responseJson.flavor_text_entries[1].flavor_text
-          },
-          function () { }
-        );
-        
-      })
-      .catch(error => {
-        console.error(error);
-      });
+      fetch("https://pokeapi.co/api/v2/pokemon-species/" + name)
+        .then(response => response.json())
+        .then(responseJson => {
+          this.setState(
+            {
+              description: responseJson.flavor_text_entries[1].flavor_text
+            },
+            function() {}
+          );
+        })
+        .catch(error => {
+          console.error(error);
+        });
     }
-    return <Text style={{textAlign: "center"}}>{this.state.description}</Text>
+    return (
+      <Text style={{ textAlign: "center" }}>{this.state.description}</Text>
+    );
   }
   PokeAbility() {
     let { id } = this.props.route.params;
@@ -75,7 +100,7 @@ export default class Second extends Component {
             isLoading: false,
             dataSourceAbility: responseJson.abilities
           },
-          function () { }
+          function() {}
         );
       })
       .catch(error => {
@@ -83,130 +108,136 @@ export default class Second extends Component {
       });
   }
   addToFavorit(id, name) {
-    var user = firebaseApp.auth().currentUser.uid
-    firebaseApp.database().ref('users/' + user + '/' + id).set({
-      name: name,
-      id: id
-    }).then(() => {
-      alert('Ajouté au favoris');
-    }).catch((error) => {
-      alert(error);
-
-    })
+    var user = firebaseApp.auth().currentUser.uid;
+    firebaseApp
+      .database()
+      .ref("users/" + user + "/" + id)
+      .set({
+        name: name,
+        id: id
+      })
+      .then(() => {
+        alert("Ajouté au favoris");
+      })
+      .catch(error => {
+        alert(error);
+      });
   }
   descAbility(name) {
     if (this.state[name] === undefined) {
       fetch("https://pokeapi.co/api/v2/ability/" + name)
         .then(response => response.json())
         .then(responseJson => {
-          this.setState({ [name]: responseJson.effect_entries[0].effect })
-
+          this.setState({ [name]: responseJson.effect_entries[0].effect });
         })
         .catch(error => {
           console.error(error);
         });
-      return
+      return;
     } else {
-      return <Text>{this.state[name]}</Text>
-
+      return <Text>{this.state[name]}</Text>;
     }
   }
-
+  playSound(name) {
+    const playbackObject = Audio.Sound.createAsync(
+      { uri: `https://play.pokemonshowdown.com/audio/cries/${name}.mp3` },
+      { shouldPlay: true }
+    );
+  }
 
   render() {
     const { message } = this.props.route.params;
     const { id } = this.props.route.params;
 
-
     return (
+      <ScrollView style={{     }}>
       <View
         style={{
           flex: 0.5,
           flexDirection: "column"
         }}
       >
-        <View style={{ flex: 10, marginTop: "1%" }}>
-          <Text style={styles.name_poke}>
-            {message.toUpperCase()} #{id}
-          </Text>
-          <TouchableOpacity onPress={() =>
-            this.addToFavorit(id, message)}>
-            <Text style={styles.pokeFavo}>
-              ⭐
-          </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              if (
-                this.state.url ==
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon"
-              ) {
-                this.setState({
-                  url:
-                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back"
-                });
-              }
-              if (
-                this.state.url ==
-                "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back"
-              ) {
-                this.setState({
-                  url:
-                    "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon"
-                });
-              }
-            }}
-            onLongPress={() => {
-              if (this.state.shiny == "/") {
-                this.setState({
-                  shiny: "/shiny/"
-                });
-              }
-            }}
-          >
+          <View style={{ flex: 10, marginTop: "1%" }}>
+            <Text style={styles.name_poke}>
+              {message.toUpperCase()} #{id}
+            </Text>
+            <TouchableOpacity onPress={() => this.addToFavorit(id, message)}>
+              <Text style={styles.pokeFavo}>⭐</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => this.playSound(message)}>
+              <Text style={styles.pokeFavo}>🔊</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity
+              onPress={() => {
+                if (
+                  this.state.url ==
+                  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon"
+                ) {
+                  this.setState({
+                    url:
+                      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back"
+                  });
+                }
+                if (
+                  this.state.url ==
+                  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back"
+                ) {
+                  this.setState({
+                    url:
+                      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon"
+                  });
+                }
+              }}
+              onLongPress={() => {
+                if (this.state.shiny == "/") {
+                  this.setState({
+                    shiny: "/shiny/"
+                  });
+                }
+              }}
+            >
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Image
+                  style={{ width: 200, height: 200 }}
+                  source={{
+                    uri: this.state.url + this.state.shiny + id + ".png"
+                  }}
+                />
+              </View>
+            </TouchableOpacity>
             <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Image
-                style={{ width: 200, height: 200 }}
-                source={{
-                  uri: this.state.url + this.state.shiny + id + ".png"
-                }}
+              <FlatList
+                data={this.state.dataSourceType}
+                numColumns={2}
+                renderItem={({ item }) => (
+                  <Text style={typePoke[item.type.name]}>
+                    {item.type.name.toUpperCase()}
+                  </Text>
+                )}
               />
             </View>
-
-          </TouchableOpacity>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <FlatList
-              data={this.state.dataSourceType}
-              numColumns={2}
-              renderItem={({ item }) => (
-                <Text style={typePoke[item.type.name]}>
-                  {item.type.name.toUpperCase()}
-                </Text>
-              )}
-            />
+            <Text></Text>
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+              {this.PokeDesc(message)}
+            </View>
+            <Text></Text>
+            <View>
+              <FlatList
+                data={this.state.dataSourceAbility}
+                renderItem={({ item }) => (
+                  <Card title={item.ability.name.toUpperCase()}>
+                    <Text style={{ marginBottom: 10 }}>
+                      {this.descAbility(item.ability.name)}
+                    </Text>
+                  </Card>
+                )}
+              />
+            </View>
           </View>
-          <Text></Text>
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
-          {this.PokeDesc(message)}
-          </View>
-          <Text></Text>
-          <View>
-            <FlatList
-
-              data={this.state.dataSourceAbility}
-              renderItem={({ item }) => (
-                <Card
-                  title={item.ability.name.toUpperCase()}>
-                  <Text style={{ marginBottom: 10 }}>
-                    {this.descAbility(item.ability.name)}
-                  </Text>
-                </Card>
-              )}
-            />
-          </View>
-        </View>
-
       </View>
+        </ScrollView>
     );
   }
 }

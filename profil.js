@@ -102,7 +102,8 @@ export default class Second extends Component {
                         />
 
                     </View>
-                    <View style={{ flex: 1 }}>
+                    <View style={{ flex: 1, alignItems:'center', justifyContent:'center' }}>
+                     <View style={{flex:1, flexDirection:"row", alignItems:"center" }}>
                         <Button
                             title="Déconnexion"
                             type="outline"
@@ -111,6 +112,12 @@ export default class Second extends Component {
                                     alert('Déconnecté')
                                 })}
                         ></Button>
+                        <Button
+                            title="Recherche google"
+                            type=""
+                            onPress={() => this.props.navigation.navigate('Recherche Google')}
+                        ></Button>
+                     </View>
                     </View>
                 </View>
             );

@@ -28,7 +28,6 @@ export default class Second extends Component {
         return
       }
       firebaseApp.auth().createUserWithEmailAndPassword(email, password)
-
     } catch (error) {
       console.log(error.toString());
     }

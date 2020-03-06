@@ -8,6 +8,7 @@ import First from './liste';
 import Second from './details';
 import Inscription from './Inscription';
 import profil from './profil';
+import google from './searchGoogle';
 console.disableYellowBox = true; 
 
 
@@ -21,6 +22,7 @@ function App() {
           <Stack.Screen name="Détails" component={Second} />
           <Stack.Screen name="Connexion / Inscription" component={Inscription} />
           <Stack.Screen name="Profil" component={profil} />
+          <Stack.Screen name="Recherche Google" component={google} />
         </Stack.Navigator>
       </NavigationContainer>
   );
